@@ -1,0 +1,158 @@
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col col-md-6">
+                <h5 class="card-title">
+                    {{ '::Menu:CustomerRegister' | abpLocalization }}
+                </h5>
+            </div>
+            <div class="text-end col col-md-6">
+                <div class="text-lg-end pt-2">
+                    <button id="create" class="btn btn-primary" type="button" (click)="createCustomer()">
+                        <i class="fa fa-plus me-1"></i>
+                        <span>{{ "::NewCustomer" | abpLocalization }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <ngx-datatable [list]="list" [rows]="customer.items" [count]="customer.totalCount" default>
+            <ngx-datatable-column [name]="'::CustomerName' | abpLocalization" prop="customerName">
+            </ngx-datatable-column>
+            <!-- <ngx-datatable-column [name]="'::Course' | abpLocalization" prop="courses">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ '::Enum:Course:' + row.courses | abpLocalization }}
+                </ng-template>
+            </ngx-datatable-column> -->
+            <ngx-datatable-column [name]="'::CourseName' | abpLocalization" prop="courseName">
+            </ngx-datatable-column>
+            <ngx-datatable-column [name]="'::StartDate' | abpLocalization" prop="startDate">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row.startDate | date }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column [name]="'::EndDate' | abpLocalization" prop="endDate">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row.endDate | date }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column [name]="'::CustomerEmail' | abpLocalization" prop="customerEmail">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row.customerEmail }}
+                </ng-template>
+            </ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+
+    <abp-modal [(visible)]="isModalOpen">
+        <ng-template>
+            <h3>{{ "::NewCustomer" | abpLocalization }}</h3>
+        </ng-template>
+
+        <ng-template #abpBody>
+            <form [formGroup]="form" (ngSubmit)="save()">
+                <div class="form-group">
+                    <label for="customer-name">Customer Name</label><span> * </span>
+                    <input type="text" id="customer-name" class="form-control" formControlName="customerName"
+                        autofocus />
+                </div>
+
+                <div class="form-group">
+                    <label for="customer-email">Email</label><span> * </span>
+                    <input type="email" id="customer-price" class="form-control" formControlName="customerEmail" />
+                </div>
+
+                <div class="form-group">
+                    <label for="customer-course">Course</label><span> * </span>
+                    <input type="text" id="customer-course" class="form-control" formControlName="courseName" />
+                </div>
+
+                <div class="form-group">
+                    <label>Start date</label><span> * </span>
+                    <input #datepicker="ngbDatepicker" class="form-control" name="datepicker" id="one"
+                        formControlName="startDate" ngbDatepicker (click)="datepicker.toggle()" />
+                </div>
+
+                <div class="form-group">
+                    <label>End date</label><span> * </span>
+                    <input #datepicker1="ngbDatepicker" class="form-control" name="datepicker1"
+                        formControlName="endDate" id="two" ngbDatepicker (click)="datepicker1.toggle()" />
+                </div>
+            </form>
+        </ng-template>
+
+        <ng-template #abpFooter>
+            <button type="button" class="btn btn-secondary" abpClose>
+                {{ '::Close' | abpLocalization }}
+            </button>
+            <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
+                <i class="fa fa-check mr-1"></i>
+                {{ '::Save' | abpLocalization }}
+            </button>
+        </ng-template>
+    </abp-modal>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="text-end col col-md-6">
+            <div class="text-lg-end pt-2">
+                <button id="mails" class="btn btn-primary" type="button" (click)="mail()">
+                    <i class="fa fa-plus me-1"></i>
+                    <span>temp</span>
+                </button>
+
+                <!-- <button class="btn btn-primary" (click)="mail()">Open modal</button> -->
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <abp-modal [(visible)]="isMailOpen">
+            <ng-template #abpHeader>
+                <h3>Modal Title</h3>
+            </ng-template>
+
+            <ng-template #abpBody>
+                <form [formGroup]="form" (ngSubmit)="saveMail()">
+                    <div class="form-group">
+                        <label for="template-name">Template Name</label><span> * </span>
+                        <input type="text" id="template-name" class="form-control" formControlName="templateName"
+                            value="Course Reminder" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label for="template-body">Body</label><span> * </span>
+                        <input type="text" id="template-body" class="form-control" value="Course Reminder"
+                            formControlName="body" />
+                    </div>
+                </form>
+            </ng-template>
+
+            <ng-template #abpFooter>
+                <button type="button" class="btn btn-secondary" abpClose>Close</button>
+            </ng-template>
+        </abp-modal>
+
+    </div>
+    <!-- <abp-modal [(visible)]="isMailOpen">
+        <ng-template>
+            <h1>Mail Templates</h1>
+        </ng-template>
+        <ng-template #mailBody1>
+            <form [formGroup]="form" (ngSubmit)="saveMail()">
+                <div class="form-group">
+                    <label for="template-name">Template Name</label><span> * </span>
+                    <input type="text" id="template-name" class="form-control" formControlName="templateName"
+                        value="Course Reminder" readonly />
+                </div>
+                <div class="form-group">
+                    <label for="template-body">Body</label><span> * </span>
+                    <input type="text" id="template-body" class="form-control" value="Course Reminder" formControlName="body" />
+                </div>
+            </form>
+        </ng-template>
+    </abp-modal> -->
+    <!-- sample.component.html -->
+</div>

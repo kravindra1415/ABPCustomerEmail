@@ -1,0 +1,19 @@
+{
+  "culture": "en",
+  "texts": {
+    "Menu:Home": "Home",
+    "Welcome": "Welcome",
+    "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io.",
+    "Menu:CustomerRegister": "CustomerRegister",
+    "Enum:Course.Angular": "Angular",
+    "Enum:Course.React": "React",
+    "Enum:Course.Python": "Python",
+    "Enum:Course.Azure": "Azure",
+    "CustomerName": "CustomerName",
+    "CustomerEmail": "CustomerEmail",
+    "StartDate": "StartDate",
+    "EndDate": "EndDate",
+    "CourseName": "CourseName",
+    "NewCustomer": "New Customer"
+  }
+}

@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>CustomerRegister</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CustomerRegister.Domain\CustomerRegister.Domain.csproj" />
+    <ProjectReference Include="..\CustomerRegister.Application.Contracts\CustomerRegister.Application.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MimeKit" Version="3.4.2" />
+    <PackageReference Include="Volo.Abp.Account.Application" Version="6.0.1" />
+    <PackageReference Include="Volo.Abp.Identity.Application" Version="6.0.1" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="6.0.1" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="6.0.1" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="6.0.1" />
+    <PackageReference Include="Volo.Abp.SettingManagement.Application" Version="6.0.1" />
+  </ItemGroup>
+
+</Project>
