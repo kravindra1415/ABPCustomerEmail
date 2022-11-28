@@ -8,9 +8,11 @@ namespace CustomerRegister.Register
 {
     public class EmailData
     {
-        public string EmailToId { get; set; }
+        public string EmailTo { get; set; }
         public string EmailToName { get; set; }
-        public string? EmailSubject { get; set; }
+        public string EmailSubject { get; set; }
         public string EmailBody { get; set; }
+
+        //public string FromEmail { get; set; }
     }
 }

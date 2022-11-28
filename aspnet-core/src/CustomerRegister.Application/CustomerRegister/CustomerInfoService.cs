@@ -1,13 +1,19 @@
 ﻿using CustomerRegister.CustomerRegister;
 using CustomerRegister.Dtos;
 using CustomerRegister.Register;
-using MailKit.Net.Smtp;
-using MimeKit;
+using Microsoft.Extensions.Configuration;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using SendGrid.Helpers.Mail.Model;
 using System;
 using System.Collections.Generic;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Emailing;
+using Volo.Abp.Emailing.Templates;
+using Volo.Abp.TextTemplating;
 
 namespace CustomerRegister
 {
@@ -19,17 +25,16 @@ namespace CustomerRegister
     public class CustomerInfoService : CustomerRegisterAppService, ICustomerInfoServices
     {
         private readonly IRepository<CustomerInfo, Guid> _repository;
-        private readonly EmailSettings _emailSettings;
+        private readonly IEmailSender _emailSender;
+        private readonly ITemplateRenderer _templateRenderer;
+        private readonly IConfiguration _configuration;
 
-        //public CustomerInfoService(IRepository<CustomerInfo, Guid> repository, IOptions<EmailSettings> options)
-        //{
-        //    _repository = repository;
-        //    _emailSettings = options.Value;
-        //}
-
-        public CustomerInfoService(IRepository<CustomerInfo, Guid> repository)
+        public CustomerInfoService(IRepository<CustomerInfo, Guid> repository, IEmailSender emailSender, ITemplateRenderer templateRenderer, IConfiguration configuration)
         {
             _repository = repository;
+            _emailSender = emailSender;
+            _templateRenderer = templateRenderer;
+            _configuration = configuration;
 
         }
 
@@ -64,64 +69,98 @@ namespace CustomerRegister
             EmailData emailData = new()
             {
                 EmailToName = input.CustomerName,
-                EmailBody = "HI " + input.CustomerName + ", This is the reminder for you that your course " + input.CourseName + ", is on " + input.StartDate,
-                EmailToId = input.CustomerEmail,
-                EmailSubject = "Subject"
+                //EmailBody = "HI " + input.CustomerName +
+                //", This is the reminder for you that your course " +
+                //input.CourseName + ", is on " + input.StartDate,
+                EmailTo = input.CustomerEmail,
+                //EmailBody = await _templateRenderer.RenderAsync(
+                //    StandardEmailTemplates.Message, new
+                //    {
+                //        message = "HI " + input.CustomerName + ", This is the reminder for you that your course " + input.CourseName + ", is on " + input.StartDate,
+                //    }
+                //    ),
+                EmailBody= "HI " + input.CustomerName + ", This is the reminder for you that your course " + input.CourseName + ", is on " + input.StartDate,
+                EmailSubject = "Subject",
+
             };
 
-            SendEmail(emailData);
+            //SendEmail(emailData);
+            await SendEmailAsync(emailData);
 
             return ObjectMapper.Map<CustomerInfo, CustomerInfoDto>(customer);
         }
 
-        public bool SendEmail(EmailData emailData)
+        //public bool SendEmail(EmailData emailData)
+        //{
+        //    try
+        //    {
+        //        MimeMessage emailMessage = new();
+
+        //        CustomerInfo info = new();
+
+        //        MailboxAddress emailFrom = new(CustomerRegisterConsts.Name, CustomerRegisterConsts.EmailId);
+        //        emailMessage.From.Add(emailFrom);
+
+        //        //MailboxAddress emailTo = new(emailData.EmailToName, emailData.EmailToId);
+        //        MailboxAddress emailTo = new(emailData.EmailToName, emailData.EmailToId);
+        //        emailMessage.To.Add(emailTo);
+
+        //        emailMessage.Subject = emailData.EmailSubject;
+
+        //        BodyBuilder emailBodyBuilder = new()
+        //        {
+        //            TextBody = emailData.EmailBody
+        //        };
+        //        emailMessage.Body = emailBodyBuilder.ToMessageBody();
+
+
+        //        SmtpClient emailClient = new();
+
+        //        emailClient.Connect(CustomerRegisterConsts.Host, CustomerRegisterConsts.Port, CustomerRegisterConsts.UseSSL);
+        //        emailClient.Authenticate(CustomerRegisterConsts.EmailId, CustomerRegisterConsts.Password);
+        //        emailClient.Send(emailMessage);
+        //        emailClient.Disconnect(true);
+        //        emailClient.Dispose();
+
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //Log Exception Details
+        //        return false;
+        //    }
+        //}
+
+        public async Task SendEmailAsync(EmailData emailData)
         {
+
             try
             {
-                MimeMessage emailMessage = new();
+                var apiKey = _configuration.GetRequiredSection("EmailSettings").GetValue<string>("SendGridAPIKey");
+                var client = new SendGridClient(apiKey);
+                var FromEmail = _configuration.GetRequiredSection("EmailSettings").GetValue<string>("FromEmail");
+                var EmailBody = emailData.EmailBody;
 
-                CustomerInfo info = new();
-
-                MailboxAddress emailFrom = new(CustomerRegisterConsts.Name, CustomerRegisterConsts.EmailId);
-                emailMessage.From.Add(emailFrom);
-
-                //MailboxAddress emailTo = new(emailData.EmailToName, emailData.EmailToId);
-                MailboxAddress emailTo = new(emailData.EmailToName, emailData.EmailToId);
-                emailMessage.To.Add(emailTo);
-
-                emailMessage.Subject = emailData.EmailSubject;
-
-                BodyBuilder emailBodyBuilder = new()
+                var msg = new SendGridMessage()
                 {
-                    TextBody = emailData.EmailBody
+                    From = new EmailAddress(FromEmail),
+                    Subject = "Plain Text Email",
+                    PlainTextContent = EmailBody
                 };
-                emailMessage.Body = emailBodyBuilder.ToMessageBody();
 
+                msg.AddTo(emailData.EmailTo);
 
-                SmtpClient emailClient = new();
+                var response = await client.SendEmailAsync(msg);
 
-                emailClient.Connect(CustomerRegisterConsts.Host, CustomerRegisterConsts.Port, CustomerRegisterConsts.UseSSL);
-                emailClient.Authenticate(CustomerRegisterConsts.EmailId, CustomerRegisterConsts.Password);
-                emailClient.Send(emailMessage);
-                emailClient.Disconnect(true);
-                emailClient.Dispose();
-
-                return true;
+                string message = response.IsSuccessStatusCode ? "Email Send" : "Email Sending Failed..";
+                //return Ok(message);
             }
             catch (Exception ex)
             {
-                //Log Exception Details
-                return false;
+                var msg = ex.Message;
+                throw;
             }
+
         }
     }
 }
-
-//"EmailSettings": {
-//    "EmailId": "testtechnology1020@gmail.com",
-//    "Name": "Support - Pro Code Guide",
-//    "Password": "nnyxycfwbpdmtnte",
-//    "Host": "smtp.gmail.com",
-//    "Port": 465,
-//    "UseSSL": true
-//  },
