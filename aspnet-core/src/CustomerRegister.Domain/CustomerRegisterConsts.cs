@@ -8,7 +8,7 @@ public static class CustomerRegisterConsts
 
     public const string EmailId = "kravindra141516@gmail.com";
     public const string Name = "Support - Pro Code Guide";
-    public const string Password = "bjearqfiotjbpoqs";
+    public const string Password = "jnzmdzzqphbixocu";
     public const string Host = "smtp.gmail.com";
     public const bool UseSSL = true;
     public const int Port = 465;
