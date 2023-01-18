@@ -28,6 +28,7 @@ public class CustomerRegisterDbContext :
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
 
     public DbSet<CustomerInfo> customerInfos { get; set; }
+    public DbSet<TemplateInfo> templateInfos { get; set; }
 
     #region Entities from the modules
 
@@ -89,6 +90,13 @@ public class CustomerRegisterDbContext :
         builder.Entity<CustomerInfo>(b =>
         {
             b.ToTable(CustomerRegisterConsts.DbTablePrefix + "CustomerInfo", CustomerRegisterConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+            //...
+        });
+
+        builder.Entity<TemplateInfo>(b =>
+        {
+            b.ToTable(CustomerRegisterConsts.DbTablePrefix + "TemplateInfo", CustomerRegisterConsts.DbSchema);
             b.ConfigureByConvention(); //auto configure for the base class props
             //...
         });

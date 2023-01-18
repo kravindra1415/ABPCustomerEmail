@@ -1,9 +1,5 @@
 ﻿using CustomerRegister.Dtos;
-using CustomerRegister.Register;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -14,6 +10,9 @@ namespace CustomerRegister.CustomerRegister
     {
         Task<PagedResultDto<CustomerInfoDto>> GetCustomers(GetCustomerDto input);
         Task<CustomerInfoDto> CreateAsync(CreateUpdateCustomerDto input);
+        Task SendEmailAll(SendAllEmailDto input,string EmailTemplateName);
+        Task<List<string>> GetAllTemplates();
+        Task<string> GetEmailTemplate(string emailTemplateName);
         //bool SendEmail(EmailData emailData);
     }
 }

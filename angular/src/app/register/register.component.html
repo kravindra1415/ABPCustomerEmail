@@ -1,0 +1,22 @@
+<form>
+    <div class="form-group">
+        <label for="customer-name">Template Name</label><span> * </span>
+        <input type="text" id="customer-name" class="form-control" [value]="tempName" disabled />
+    </div>
+
+    <div>
+        <label class="mt-3" for="customer-name">Body</label><span> * </span>
+        <!-- <ckeditor *ngFor="let d of getTempdata" 
+        [data]="'Hi '+d.customerName+'Your Course is '+d.courseName"
+            [editor]="Editor" class="form-control" autofocus></ckeditor> -->
+        <!-- <input type="text" class="form-control" name="" id="" [value]="tempData" disabled> -->
+        <textarea class="form-control" name="" id="" cols="10" rows="10" [value]="tempData" disabled></textarea>
+    </div>
+
+    <div class="mt-2">
+        <button class="btn btn-primary" (click)="sendMail()">
+            <i class="fa fa-check me-1"></i>
+            Send
+        </button>
+    </div>
+</form>

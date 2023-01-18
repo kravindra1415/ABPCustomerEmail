@@ -14,7 +14,8 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { APP_ROUTE_PROVIDER } from './route.provider';
-
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -32,6 +33,7 @@ import { APP_ROUTE_PROVIDER } from './route.provider';
     SettingManagementConfigModule.forRoot(),
     ThemeLeptonXModule.forRoot(),
     SideMenuLayoutModule.forRoot(),
+    CKEditorModule,NgbDropdownModule
   ],
   declarations: [AppComponent],
   providers: [APP_ROUTE_PROVIDER],

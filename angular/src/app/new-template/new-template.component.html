@@ -1,0 +1,151 @@
+<p>new-template works!</p>
+
+<!-- <div>
+
+    <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="form-group">
+            <label for="customer-name">Template Name</label><span> * </span>
+            <input type="text" id="customer-name" class="form-control" formControlName="templateName" autofocus />
+        </div>
+
+        <div>
+            <label class="mt-3" for="customer-name">Body</label><span> * </span>
+            <ckeditor [editor]="Editor" class="form-control" formControlName="templateData" autofocus></ckeditor>
+        </div>
+    </form>
+
+
+</div> -->
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col col-md-6">
+                <h5 class="card-title">Template</h5>
+            </div>
+            <div class="text-end col col-md-6">
+
+                <!-- Add the "new book" button here -->
+                <div class="text-lg-end pt-2">
+                    <button id="create" class="btn btn-primary" type="button" (click)="createTemplate()">
+                        <i class="fa fa-plus me-1"></i>
+                        <span>Create</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <!-- ngx-datatable should be here! -->
+    </div>
+</div>
+ <abp-modal [(visible)]="isModalOpen">
+    <form #custForm="ngForm">
+        <ng-template #abpHeader>
+            <h3>Template</h3>
+        </ng-template>
+
+        <ng-template #abpBody>
+
+            <!--<div class="form-group">
+                <label for="customer-name">Customer Name</label><span> * </span>
+                <input #names type="text" [(ngModel)]="customerFormObject.customerName" id="customer-name"
+                    class="form-control" name="customerName" autofocus />
+            </div>
+
+            <div class="form-group">
+                <label for="customer-email">Email</label><span> * </span>
+                <input type="email" [(ngModel)]="customerFormObject.customerEmail" id="customer-price"
+                    class="form-control" name="customerEmail" />
+            </div>
+
+            <div class="form-group">
+                <label for="customer-course">Course</label><span> * </span>
+                <input type="text" [(ngModel)]="customerFormObject.courseName" id="customer-course" class="form-control"
+                    name="courseName" />
+            </div>
+
+            <div class="form-group">
+                <label>Start date</label><span> * </span>
+                <input #datepicker="ngbDatepicker" class="form-control" [(ngModel)]="customerFormObject.startDate"
+                    id="one" name="startDate" ngbDatepicker (click)="datepicker.toggle()" />
+            </div>
+
+            <div class="form-group">
+                <label>End date</label><span> * </span>
+                <input #datepicker1="ngbDatepicker" class="form-control" name="endDate"
+                    [(ngModel)]="customerFormObject.endDate" id="two" ngbDatepicker (click)="datepicker1.toggle()" />
+            </div>-->
+
+            <div class="form-group">
+                <label for="customer-name">Template Name</label><span> * </span>
+                <input type="text" [(ngModel)]="customerFormObject.templateName" id="customer-name" class="form-control"
+                    name="templateName" autofocus />
+            </div>
+
+            <div>
+                <label class="mt-3" for="customer-name">Body</label><span> * </span>
+                <!-- <ckeditor [data]="'Hi '+customerFormObject.customerName +' your course start on ,'+ customerFormObject.startDate"
+                    [(ngModel)]="'Hi '+customerFormObject.customerName +' your course start on ,'+ customerFormObject.startDate"
+                    [editor]="Editor" class="form-control" name="templateData" autofocus></ckeditor>  -->
+
+                <ckeditor class="form-control" [editor]="Editor" name="templateData" [editor]="Editor" [(ngModel)]="customerFormObject.templateData" 
+                [data]="customerFormObject.templateData" name="templateData" autofocus>
+                </ckeditor>
+            </div>
+
+        </ng-template>
+
+        <ng-template #abpFooter>
+            <button class="btn btn-primary" (click)="save(custForm)">
+                <i class="fa fa-check mr-1"></i>
+                {{ '::Save' | abpLocalization }}
+            </button>
+            <button type="button" class="btn btn-secondary" abpClose>
+                {{ '::Close' | abpLocalization }}
+            </button>
+        </ng-template>
+    </form>
+</abp-modal> 
+
+<!-- <ng-template #abpBody>
+    <form [formGroup]="form" (ngSubmit)="save(form)">
+        {{namesDynamic}}
+        <div class="form-group">
+            <label for="customer-name">Customer Name</label><span> * </span>
+            <input #names type="text" id="customer-name" class="form-control" formControlName="customerName"
+                (input)="keyPressEvent($event)" autofocus />
+        </div>
+
+        <div class="form-group">
+            <label for="customer-email">Email</label><span> * </span>
+            <input type="email" id="customer-price" class="form-control" formControlName="customerEmail" />
+        </div>
+
+        <div class="form-group">
+            <label for="customer-course">Course</label><span> * </span>
+            <input type="text" id="customer-course" class="form-control" formControlName="courseName" />
+        </div>
+
+        <div class="form-group">
+            <label>Start date</label><span> * </span>
+            <input #datepicker="ngbDatepicker" class="form-control" name="datepicker" id="one"
+                formControlName="startDate" ngbDatepicker (click)="datepicker.toggle()" />
+        </div>
+
+        <div class="form-group">
+            <label>End date</label><span> * </span>
+            <input #datepicker1="ngbDatepicker" class="form-control" name="datepicker1" formControlName="endDate"
+                id="two" ngbDatepicker (click)="datepicker1.toggle()" />
+        </div>
+
+        <div class="form-group">
+            <label for="customer-name">Template Name</label><span> * </span>
+            <input type="text" id="customer-name" class="form-control" formControlName="templateName" autofocus />
+        </div>
+
+        <div>
+            <label class="mt-3" for="customer-name">Body</label><span> * </span>
+            <ckeditor [data]="namesDynamic" [editor]="Editor" class="form-control" formControlName="templateData" autofocus></ckeditor>
+        </div>
+    </form>
+</ng-template> -->

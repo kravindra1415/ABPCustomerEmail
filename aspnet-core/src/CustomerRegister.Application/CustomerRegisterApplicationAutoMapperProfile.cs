@@ -13,6 +13,10 @@ public class CustomerRegisterApplicationAutoMapperProfile : Profile
          * into multiple profile classes for a better organization. */
 
         CreateMap<CustomerInfo, CustomerInfoDto>();
-        CreateMap<CreateUpdateCustomerDto, CustomerInfo>();
+        CreateMap<CreateUpdateCustomerDto, CustomerInfo>(MemberList.None);
+
+        CreateMap<TemplateInfo, TemplateInfoDto>().ReverseMap();
+
     }
 }
+ 

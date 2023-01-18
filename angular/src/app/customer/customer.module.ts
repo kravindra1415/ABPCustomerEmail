@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerComponent } from './customer.component';
 import { SharedModule } from '../shared/shared.module';
-
-
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [
     CustomerComponent
@@ -13,7 +11,7 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     SharedModule,
     CustomerRoutingModule,
-    NgbDatepickerModule
+    NgbDatepickerModule,NgbDropdownModule
   ]
 })
 export class CustomerModule { }

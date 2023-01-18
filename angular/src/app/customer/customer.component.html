@@ -8,16 +8,57 @@
             </div>
             <div class="text-end col col-md-6">
                 <div class="text-lg-end pt-2">
-                    <button id="create" class="btn btn-primary" type="button" (click)="createCustomer()">
+                    <button id="create" class="btn btn-secondary" type="button" (click)="sendAllEmail()">
                         <i class="fa fa-plus me-1"></i>
-                        <span>{{ "::NewCustomer" | abpLocalization }}</span>
+                        <span>Send</span>
                     </button>
+                    <p>{{selectedItem}}</p>
+                    <!--<select  #data class="form-select mb-2" aria-label="Default select example"
+                        (change)="getData($event)">
+                        <option selected>Select Temaplate</option>
+                         <option value="1">register</option> 
+                         <option> <a (click)="onNavigation()" value="1">register</a></option>
+                        <option value="2">completed</option> 
+                         <option *ngFor="let data of tempInfo" [value]=data.templateName>
+                        {{data.templateName}}
+                        </option> 
+                         <option value="2">Two</option>
+                    </select>-->
+
+                    <p>{{selectedItem}}</p>
+                    <div ngbDropdown class="d-inline-block" (change)="getData($event)">
+                        <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
+                            Templates
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <button *ngFor="let data of tempInfo" ngbDropdownItem value={{data}}
+                                (click)="onNavigation(data)">{{data}}</button>
+                            <!-- <button ngbDropdownItem>completed</button> -->
+                        </div>
+                    </div>
+                    <div>
+                        <button id="mails" class="btn btn-secondary" type="button" routerLink="/templates">
+                            <i class="fa fa-plus me-1"></i>
+                            <span class="text-secondary">New Template</span>
+                        </button>
+                    </div>
+                    <div>
+                        <button id="create" class="btn btn-primary ms-1" type="button" (click)="createCustomer()">
+                            <i class="fa fa-plus me-1"></i>
+                            <span>{{ "::NewCustomer" | abpLocalization }}</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="card-body">
-        <ngx-datatable [list]="list" [rows]="customer.items" [count]="customer.totalCount" default>
+        <ngx-datatable [selectionType]="'checkbox'" [list]="list" [rows]="customer.items" [count]="customer.totalCount"
+            (select)="onSelect($event)" default>
+
+            <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+                [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true"></ngx-datatable-column>
+
             <ngx-datatable-column [name]="'::CustomerName' | abpLocalization" prop="customerName">
             </ngx-datatable-column>
             <!-- <ngx-datatable-column [name]="'::Course' | abpLocalization" prop="courses">
@@ -44,16 +85,32 @@
                     {{ row.customerEmail }}
                 </ng-template>
             </ngx-datatable-column>
+
         </ngx-datatable>
     </div>
 
-    <abp-modal [(visible)]="isModalOpen">
-        <ng-template>
-            <h3>{{ "::NewCustomer" | abpLocalization }}</h3>
-        </ng-template>
+    <!-- <div class="selected-column">
+        <h4>
+            Selections <small>({{ selected?.length }})</small>
+        </h4>
+        <ul>
+            <li *ngFor="let sel of selected">
+                {{ sel.customerName }}
+            </li>
+            <li *ngIf="!selected?.length">No Selections</li>
+        </ul>
+    </div> -->
 
+    <abp-modal [(visible)]="isModalOpen">
+        <div>
+            <ng-template>
+                <h3>{{ "::NewCustomer" | abpLocalization }}</h3>
+            </ng-template>
+
+        </div>
         <ng-template #abpBody>
             <form [formGroup]="form" (ngSubmit)="save()">
+
                 <div class="form-group">
                     <label for="customer-name">Customer Name</label><span> * </span>
                     <input type="text" id="customer-name" class="form-control" formControlName="customerName"
@@ -100,10 +157,22 @@
     <div class="card-header">
         <div class="text-end col col-md-6">
             <div class="text-lg-end pt-2">
-                <button id="mails" class="btn btn-primary" type="button" (click)="mail()">
-                    <i class="fa fa-plus me-1"></i>
-                    <span>temp</span>
-                </button>
+                <!-- <button id="mails" class="btn btn-secondary" type="button" routerLink="/templates">
+                    <i class="fa fa-plus me-1"></i> 
+                    <span class="text-secondary">New Template</span>
+                </button> -->
+
+                <!-- <p>{{selectedItem}}</p>
+                <select #data class="form-select" aria-label="Default select example" (change)="getData($event)">
+                    <option selected>Select Temaplate</option>
+                     <option value="1">register</option> 
+                    <option> <a (click)="onNavigation()" value="1">register</a></option>
+                    <option value="2">completed</option>
+                    <option *ngFor="let data of tempInfo" [value]=data.templateName>
+                        {{data.templateName}}
+                    </option>
+                    <option value="2">Two</option>
+                </select> -->
 
                 <!-- <button class="btn btn-primary" (click)="mail()">Open modal</button> -->
             </div>
@@ -156,3 +225,5 @@
     </abp-modal> -->
     <!-- sample.component.html -->
 </div>
+
+<router-outlet></router-outlet>
